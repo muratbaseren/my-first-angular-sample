@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Sepet</title>
+    <meta charset="utf-8" />
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/app.js"></script>
+</head>
+<body ng-app="sepet">
+    <div ng-controller="sepetCtrl">
+        <h3>Ürün Listesi</h3>
+        <input type="text" placeholder="Ürün ara" ng-model="arama" />
+        <ul>
+            <li ng-repeat="urun in urunler | filter:arama">
+                {{urun.name}}-{{urun.value}} <input type="button" value="Sepete Ekle" ng-click="sepeteekle(urun)" />
+            </li>
+        </ul>
+        <hr />
+        <div ng-if="sepet.length>0">
+            <h3>Sepet</h3>
+            <ul>
+                <li mo-sepet></li>
+                <li><b>Toplam: {{total}} ₺</b></li>
+            </ul>
+        </div>
+        <input type="button" value="Sepeti Onayla" ng-click="sepetiOnayla()"/>
+    </div>
+</body>
+</html>

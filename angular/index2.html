@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="Content/bootstrap.min.css" type="text/css" />
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/app2.js"></script>
+    <style>
+        input[type=text], input[type=textarea] {
+            margin-bottom: 10px;
+        }
+
+        .line-through {
+            text-decoration: line-through;
+        }
+    </style>
+</head>
+<body ng-app="todo">
+    <div ng-controller="todoController" class="container" style="padding-top:50px;">
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Add Todo Item
+                        </h4>
+                    </div>
+                    <div class="panel-body" ng-model="task">
+                        <input type="text" placeholder="task subject" class="form-control" ng-model="task.subject" />
+
+                        <textarea class="form-control" cols="30" rows="3" placeholder="task details" ng-model="task.details"></textarea>
+
+                        <!--Is Completed : <input type="checkbox" ng-model="task.completed" />
+                        <span ng-if="task.completed">
+                            <span class="glyphicon glyphicon-ok">&nbsp;</span>task completed..
+                        </span>-->
+
+                        <div ng-if="task.completed" class="text-success alert" ng-click="changeTaskState()" style="cursor:pointer;">
+                            <span class="glyphicon glyphicon-ok">&nbsp;</span>
+                            task completed..
+                        </div>
+
+                        <div ng-if="!task.completed" class="text-danger alert" ng-click="changeTaskState()" style="cursor:pointer;">
+                            <span class="glyphicon glyphicon-remove">&nbsp;</span>
+                            task incompleted..
+                        </div>
+
+                    </div>
+                    <div class="panel-footer">
+                        <button type="button" class="btn btn-success" ng-if="mode=='insert'" ng-click="saveTask()">Add</button>
+
+                        <button type="button" class="btn btn-warning" ng-if="mode=='edit'" ng-click="saveTask()">Save</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            Task List
+                        </h4>
+                    </div>
+                    <div class="panel-body">
+                        <ul class="list-group">
+                            <li class="list-group-item" ng-repeat="item in tasks">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <span class="glyphicon glyphicon-ok text-success"
+                                              ng-if="item.completed">&nbsp;</span>
+                                        <span class="glyphicon glyphicon-remove text-danger"
+                                              ng-if="!item.completed">&nbsp;</span>
+                                        <b ng-class="{'line-through':item.completed}">{{item.subject}}</b> - <i ng-class="{'line-through':item.completed}">{{item.details}}</i>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-warning btn-xs">
+                                            <span class="glyphicon glyphicon-pencil" ng-click="editTask(item)"></span>
+                                        </button>
+                                        <button class="btn btn-danger btn-xs" ng-click="removeTask(item)">
+                                            <span class="glyphicon glyphicon-remove"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="panel-footer">
+                        Task Count : {{tasks.length}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

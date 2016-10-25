@@ -1,0 +1,122 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" type="text/css" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+    <style>
+        body {
+            padding-top: 30px;
+            font-family: Tahoma;
+            font-size: 9pt;
+        }
+
+        .label {
+            margin-right: 10px;
+        }
+
+        .paraf {
+            margin-top: 15px;
+        }
+
+        input[type="text"] {
+            width: auto;
+            display: inline-block;
+        }
+    </style>
+
+</head>
+<body ng-app="myapp" ng-controller="MyController" ng-init="mode='User'">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-success" ng-click="changeMode()"></button>
+            </div>
+            <div class="col-md-6">
+                <input type="text" placeholder="type a string" class="form-control" ng-model="val" />
+                <button class="btn btn-success" ng-click="sendData()">Submit</button>
+            </div>
+        </div>
+        <div class="row">
+            <hr />
+        </div>
+        <div class="row">
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="veri in veriler">
+                    <h4>{{veri.title}}</h4>
+
+                    <div class="label label-info" ng-show="mode=='Admin'">
+                        <b>id : </b>{{veri.id}}
+                    </div>
+                    <div class="label label-info" ng-show="mode=='Admin'">
+                        <b>user id : </b>{{veri.userId}}
+                    </div>
+                    <div class="paraf">
+                        <!--<p contenteditable="{{mode=='Admin'}}">
+                            {{veri.body}}
+                        </p>-->
+                        <!--<p ng-attr-contenteditable="{{mode=='Admin'}}">
+                            {{veri.body}}
+                        </p>-->
+                        <p ng-if="mode=='Admin'" contenteditable="true">{{veri.body}}</p>
+                        <p ng-if="mode!='Admin'">{{veri.body}}</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+    <script>
+
+        var app = angular.module("myapp", []);
+
+        app.controller("MyController", function ($scope, $http) {
+
+            $scope.val = "";
+            $scope.veriler = null;
+
+            $http.get("https://jsonplaceholder.typicode.com/posts")
+                .then(function (res) {
+                    console.log(res);
+
+                    $scope.veriler = res.data;
+
+                }, function (res) {
+                    console.log(res);
+                });
+
+            function changeMode() {
+                if ($scope.mode == "User")
+                    $scope.mode = "Admin";
+                else
+                    $scope.mode = "User";
+            }
+
+            $scope.sendData = function () {
+                console.log($scope.val);
+                var obj = { d: $scope.val };
+
+                $http.post("http://localhost:50401/Home/Index", obj).then(function (res) {
+                    $scope.val = res.data;
+                });
+            }
+
+        });
+
+    </script>
+
+
+</body>
+</html>
